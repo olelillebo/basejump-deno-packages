@@ -56,6 +56,7 @@ type GENERIC_URL_RESPONSE = {
 };
 
 export type GET_BILLING_STATUS_RESPONSE = {
+    plan_name?: string;
     subscription_id: string;
     subscription_active: boolean;
     status: BASEJUMP_DATABASE_SCHEMA["basejump"]["Tables"]["billing_subscriptions"]["Row"]["status"];
