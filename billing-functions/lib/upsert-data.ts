@@ -30,6 +30,7 @@ export type BASEJUMP_BILLING_DATA_UPSERT = {
     trial_end?: Date;
     trial_start?: Date;
     plan_name?: string;
+    plan_id?: string;
     provider: string;
   };
   product?: {

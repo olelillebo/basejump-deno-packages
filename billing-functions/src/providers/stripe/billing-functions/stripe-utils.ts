@@ -51,5 +51,6 @@ export function stripeSubscriptionToBasejumpSubscription(
       : null,
     provider: "stripe",
     plan_name: product.name,
+    plan_id: product.id,
   };
 }
