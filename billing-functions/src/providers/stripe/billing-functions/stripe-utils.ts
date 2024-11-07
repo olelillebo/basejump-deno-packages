@@ -19,7 +19,8 @@ export function stripeCustomerToBasejumpCustomer(
 
 export function stripeSubscriptionToBasejumpSubscription(
   accountId: string,
-  subscription: Stripe.Subscription
+  subscription: Stripe.Subscription,
+  product: Stripe.Product
 ): BASEJUMP_BILLING_DATA_UPSERT["subscription"] {
   return {
     id: subscription.id,
@@ -49,5 +50,6 @@ export function stripeSubscriptionToBasejumpSubscription(
       ? unixToIso(subscription.trial_end)
       : null,
     provider: "stripe",
+    plan_name: product.name,
   };
 }
