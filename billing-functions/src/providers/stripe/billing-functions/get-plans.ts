@@ -1,5 +1,6 @@
 export default async function getPlans(stripeClient) {
   const prices = await stripeClient.prices.list({
+    active: true,
     expand: ["data.product"],
   });
 
