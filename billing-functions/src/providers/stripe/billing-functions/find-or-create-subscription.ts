@@ -58,24 +58,32 @@ console.log("customerSubscriptions.data.length",customerSubscriptions.data.lengt
 
   // nope, so we need to try and create it
   if (!defaultPlanId) {
-          console.log("subscription found",defaultPlanId)
+          console.log("No default plan id")
 
     return;
   }
 
-  const price = await stripeClient.prices.retrieve(defaultPlanId);
+  const priceList = await stripeClient.prices.list();
+  console.log("priceList",priceList)
 
-  console.log(price)
+  if (priceList.data.length > 0) {
+    // check to see if we have any that are for this account
+    const price = priceList.data.find(
+      (s) => s.product === defaultPlanId
+    );
 
-  // if the price doesn't exist, or price is not free and there is no trial period, return
-  // this is because we can't create the subscription without a payment method
-  if (!price || (price.unit_amount > 0 && !defaultTrialDays)) {
-    return;
-  }
+      console.log("price",price)
 
-  const newSubscription = await stripeClient.subscriptions.create({
+
+    // if the price doesn't exist, or price is not free and there is no trial period, return
+    // this is because we can't create the subscription without a payment method
+    if (!price || (price.unit_amount > 0 && !defaultTrialDays)) {
+      return;
+    }
+
+     const newSubscription = await stripeClient.subscriptions.create({
     customer: customerId,
-    items: [{ price: defaultPlanId }],
+    items: [{ price: price }],
     expand: ["latest_invoice.payment_intent"],
     trial_period_days: Number(defaultTrialDays),
     metadata: {
@@ -91,4 +99,7 @@ console.log("customerSubscriptions.data.length",customerSubscriptions.data.lengt
     newSubscription,
     product
   );
+  }
+    
+
 }
