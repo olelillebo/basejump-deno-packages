@@ -71,10 +71,14 @@ export function stripeWebhookHandler({
                         "Subscription created/updated/deleted event missing basejump_account_id"
                     );
                 }
+                const product = await stripeClient.products.retrieve(
+                  subscriptionData.items.data[0].plan.product as string
+                );
 
                 const subscription = stripeSubscriptionToBasejumpSubscription(
                     accountId,
-                    subscriptionData
+                    subscriptionData,
+                    product
                 );
 
                 return {
