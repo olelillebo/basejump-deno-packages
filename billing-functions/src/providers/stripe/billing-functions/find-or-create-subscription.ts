@@ -78,18 +78,22 @@ console.log("customerSubscriptions.data.length",customerSubscriptions.data.lengt
     // if the price doesn't exist, or price is not free and there is no trial period, return
     // this is because we can't create the subscription without a payment method
     if (!price || (price.unit_amount > 0 && !defaultTrialDays)) {
+            console.log("no price")
+
       return;
     }
 
      const newSubscription = await stripeClient.subscriptions.create({
     customer: customerId,
-    items: [{ price: price }],
+    items: [{ price: price.id }],
     expand: ["latest_invoice.payment_intent"],
     trial_period_days: Number(defaultTrialDays),
     metadata: {
       basejump_account_id: accountId,
     },
   });
+                console.log("newSubscription",newSubscription)
+
   const product = await stripeClient.products.retrieve(
     newSubscription.items.data[0].plan.product as string
   );
