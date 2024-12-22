@@ -6,7 +6,7 @@ export async function findOrCreateSubscription(
   stripeClient: Stripe.Client,
   { customerId, subscriptionId, accountId, defaultPlanId, defaultTrialDays }
 ): Promise<BASEJUMP_BILLING_DATA_UPSERT["subscription"]> {
-  console.log("test")
+  console.log("test",subscriptionId)
   if (!customerId) {
     throw new Error("customerId is required");
   }
@@ -36,7 +36,7 @@ export async function findOrCreateSubscription(
   const customerSubscriptions = await stripeClient.subscriptions.list({
     customer: customerId,
   });
-
+console.log("customerSubscriptions.data.length",customerSubscriptions.data.length)
   if (customerSubscriptions.data.length > 0) {
     // check to see if we have any that are for this account
     const subscription = customerSubscriptions.data.find(
@@ -46,6 +46,8 @@ export async function findOrCreateSubscription(
       subscription.items.data[0].plan.product as string
     );
     if (subscription) {
+      console.log("subscription found")
+
       return stripeSubscriptionToBasejumpSubscription(
         accountId,
         subscription,
@@ -56,6 +58,8 @@ export async function findOrCreateSubscription(
 
   // nope, so we need to try and create it
   if (!defaultPlanId) {
+          console.log("subscription found",defaultPlanId)
+
     return;
   }
 
