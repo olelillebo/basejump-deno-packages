@@ -6,6 +6,7 @@ export async function findOrCreateSubscription(
   stripeClient: Stripe.Client,
   { customerId, subscriptionId, accountId, defaultPlanId, defaultTrialDays }
 ): Promise<BASEJUMP_BILLING_DATA_UPSERT["subscription"]> {
+  console.log("test")
   if (!customerId) {
     throw new Error("customerId is required");
   }
@@ -59,6 +60,8 @@ export async function findOrCreateSubscription(
   }
 
   const price = await stripeClient.prices.retrieve(defaultPlanId);
+
+  console.log(price)
 
   // if the price doesn't exist, or price is not free and there is no trial period, return
   // this is because we can't create the subscription without a payment method
