@@ -19,7 +19,6 @@ type GET_PLANS_RESPONSE = Array<{
   currency: string;
   interval: "month" | "year" | "one_time";
   interval_count: 1;
-  trial_period_days?: 30;
   active?: boolean;
   metadata?: {
     [key: string]: string;
